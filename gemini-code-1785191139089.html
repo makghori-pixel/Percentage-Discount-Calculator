@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage & Discount Calculator - Fast, Free Online Tool</title>
+    <meta name="description" content="Calculate percentage discounts, price increases, savings, and final prices instantly with our free online percentage calculator. Simple, fast, and responsive.">
+    <meta name="keywords" content="discount calculator, percentage calculator, sale calculator, calculate discount, original price calculator">
+    <meta name="robots" content="index, follow">
+
+    <!-- GOOGLE ADSENSE CODE: Replace 'ca-pub-XXXXXXXXXXXXXXXX' with your actual AdSense Publisher ID -->
+    <!-- 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> 
+    -->
+
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #16a34a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            flex: 1;
+        }
+
+        /* AdSense Container Placeholder */
+        .ad-banner {
+            background-color: #f1f5f9;
+            border: 1px dashed #cbd5e1;
+            text-align: center;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-radius: 6px;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tool-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        .result-box {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .result-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--success-color);
+        }
+
+        /* SEO & Educational Content Sections */
+        .content-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .content-section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .content-section p, .content-section ul {
+            margin-bottom: 1rem;
+            color: #334155;
+        }
+
+        .content-section ul {
+            padding-left: 1.5rem;
+        }
+
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+
+        .faq-item h3 {
+            font-size: 1.05rem;
+            margin-bottom: 0.25rem;
+        }
+
+        footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            cursor: pointer;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Legal Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Percentage & Discount Calculator</h1>
+        <p>Calculate discounts, savings, percentage increases, and custom values instantly.</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Top AdSense Banner Placeholder -->
+        <div class="ad-banner">
+            <span>Responsive Header Banner Ad Placement</span>
+        </div>
+
+        <!-- MAIN INTERACTIVE TOOL -->
+        <main class="tool-card">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('discount')">Discount Off</button>
+                <button class="tab-btn" onclick="switchTab('percentage')">Basic Percentage</button>
+                <button class="tab-btn" onclick="switchTab('change')">% Change</button>
+            </div>
+
+            <!-- Tab 1: Discount Calculator -->
+            <div id="tab-discount" class="tab-content active">
+                <div class="form-group">
+                    <label for="original-price">Original Price ($)</label>
+                    <input type="number" id="original-price" placeholder="e.g., 100" oninput="calculateDiscount()">
+                </div>
+                <div class="form-group">
+                    <label for="discount-percent">Discount Percentage (%)</label>
+                    <input type="number" id="discount-percent" placeholder="e.g., 20" oninput="calculateDiscount()">
+                </div>
+                <div class="result-box">
+                    <h3>Discount Result</h3>
+                    <p>Final Price: <span id="final-price" class="result-value">$0.00</span></p>
+                    <p>Total Savings: <span id="total-savings" style="font-weight:600; color:var(--text-color);">$0.00</span></p>
+                </div>
+            </div>
+
+            <!-- Tab 2: Basic Percentage Calculator -->
+            <div id="tab-percentage" class="tab-content">
+                <div class="form-group">
+                    <label for="pct-val">What is</label>
+                    <input type="number" id="pct-val" placeholder="e.g., 15" oninput="calculateBasicPct()">
+                </div>
+                <div class="form-group">
+                    <label for="total-val">% of</label>
+                    <input type="number" id="total-val" placeholder="e.g., 200" oninput="calculateBasicPct()">
+                </div>
+                <div class="result-box">
+                    <h3>Result</h3>
+                    <p>Answer: <span id="basic-pct-result" class="result-value">0</span></p>
+                </div>
+            </div>
+
+            <!-- Tab 3: Percentage Change Calculator -->
+            <div id="tab-change" class="tab-content">
+                <div class="form-group">
+                    <label for="initial-val">From Initial Value</label>
+                    <input type="number" id="initial-val" placeholder="e.g., 50" oninput="calculatePctChange()">
+                </div>
+                <div class="form-group">
+                    <label for="final-val">To Final Value</label>
+                    <input type="number" id="final-val" placeholder="e.g., 75" oninput="calculatePctChange()">
+                </div>
+                <div class="result-box">
+                    <h3>Percentage Difference</h3>
+                    <p>Change: <span id="change-result" class="result-value">0%</span></p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Middle AdSense Banner Placeholder -->
+        <div class="ad-banner">
+            <span>In-Article / In-Feed Native Ad Placement</span>
+        </div>
+
+        <!-- MANDATORY TEXT CONTENT FOR ADSENSE APPROVAL -->
+        <article class="content-section">
+            <h2>How to Use the Percentage & Discount Calculator</h2>
+            <p>Our online percentage calculator is designed to provide quick and accurate calculations for everyday shopping, financial budgeting, and math problems. Whether you are attempting to determine sale prices at retail stores or compute percentage growth metrics, this tool handles the math automatically in real-time.</p>
+
+            <h2>Key Features & Modes</h2>
+            <ul>
+                <li><strong>Discount Off Mode:</strong> Ideal for shopping trips. Simply enter the original sticker price along with the store discount percentage to discover your final total and overall dollar savings.</li>
+                <li><strong>Basic Percentage Mode:</strong> Quickly calculate precise fractional amounts (e.g., finding a 15% tip on a restaurant bill).</li>
+                <li><strong>Percentage Change Mode:</strong> Calculate the percentage increase or decrease between two numerical values over time.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-item">
+                <h3>How do you calculate a discount percentage manually?</h3>
+                <p>To calculate a discount by hand, multiply the original price by the discount decimal (percentage divided by 100), then subtract that number from the original price.</p>
+            </div>
+            <div class="faq-item">
+                <h3>Is my calculation data saved or sent to a server?</h3>
+                <p>No. All calculations run strictly client-side inside your internet browser using vanilla JavaScript. No financial inputs or personal information are stored or transmitted anywhere.</p>
+            </div>
+        </article>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Percentage & Discount Calculator Tool. All rights reserved.</p>
+        <p>
+            <a onclick="openModal('privacyModal')">Privacy Policy</a> | 
+            <a onclick="openModal('termsModal')">Terms of Service</a> | 
+            <a onclick="openModal('aboutModal')">About Us</a> | 
+            <a onclick="openModal('contactModal')">Contact</a>
+        </p>
+    </footer>
+
+    <!-- LEGAL MODALS (Required for Google AdSense Compliance) -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('privacyModal')">&times;</button>
+            <h2>Privacy Policy</h2>
+            <p style="margin-top:1rem;">This website uses basic browser calculations. We do not store, harvest, or transmit any user data. Third-party vendors, including Google AdSense, may use cookies to serve ads based on a user's prior visits to your website or other websites.</p>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('termsModal')">&times;</button>
+            <h2>Terms of Service</h2>
+            <p style="margin-top:1rem;">This calculator is provided for informational and educational purposes only. While we aim for complete precision, we are not responsible for any financial discrepancies resulting from calculations on this site.</p>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
+            <h2>About Us</h2>
+            <p style="margin-top:1rem;">We build simple, fast, and accessible single-page utility web tools to help users make accurate mathematical calculations on the go without clutter or intrusive popups.</p>
+        </div>
+    </div>
+
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            <h2>Contact Us</h2>
+            <p style="margin-top:1rem;">If you have any questions, feedback, or bug reports regarding this tool, please reach out via our official developer contact channel.</p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.currentTarget.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        function calculateDiscount() {
+            const price = parseFloat(document.getElementById('original-price').value);
+            const discount = parseFloat(document.getElementById('discount-percent').value);
+
+            if (!isNaN(price) && !isNaN(discount)) {
+                const savings = (price * discount) / 100;
+                const finalPrice = price - savings;
+
+                document.getElementById('final-price').textContent = '$' + finalPrice.toFixed(2);
+                document.getElementById('total-savings').textContent = '$' + savings.toFixed(2);
+            } else {
+                document.getElementById('final-price').textContent = '$0.00';
+                document.getElementById('total-savings').textContent = '$0.00';
+            }
+        }
+
+        function calculateBasicPct() {
+            const pct = parseFloat(document.getElementById('pct-val').value);
+            const total = parseFloat(document.getElementById('total-val').value);
+
+            if (!isNaN(pct) && !isNaN(total)) {
+                const result = (pct / 100) * total;
+                document.getElementById('basic-pct-result').textContent = result.toFixed(2);
+            } else {
+                document.getElementById('basic-pct-result').textContent = '0';
+            }
+        }
+
+        function calculatePctChange() {
+            const initial = parseFloat(document.getElementById('initial-val').value);
+            const finalVal = parseFloat(document.getElementById('final-val').value);
+
+            if (!isNaN(initial) && !isNaN(finalVal) && initial !== 0) {
+                const change = ((finalVal - initial) / initial) * 100;
+                const prefix = change > 0 ? '+' : '';
+                document.getElementById('change-result').textContent = prefix + change.toFixed(2) + '%';
+            } else {
+                document.getElementById('change-result').textContent = '0%';
+            }
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
