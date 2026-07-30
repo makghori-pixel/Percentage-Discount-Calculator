@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage & Discount Calculator - Fast & Interactive Tool</title>
+    <meta name="description" content="Calculate discounts, total savings, price increases, and custom percentage values instantly with our interactive online calculator.">
+    <meta name="keywords" content="discount calculator, percentage calculator, savings calculator, interactive math tool">
+    <meta name="robots" content="index, follow">
+
+    <!-- GOOGLE ADSENSE CODE: Replace 'ca-pub-XXXXXXXXXXXXXXXX' with your actual AdSense Publisher ID -->
+    <!-- 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> 
+    -->
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: #ffffff;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --accent: #10b981;
+            --accent-light: #ecfdf5;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: var(--bg-gradient);
+            color: #ffffff;
+            padding: 2.5rem 1rem 4rem 1rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .hero p {
+            color: #c7d2fe;
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Container */
+        .main-container {
+            max-width: 850px;
+            margin: -2.5rem auto 2rem auto;
+            padding: 0 1rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* AdSense Banners */
+        .ad-banner {
+            background: #f1f5f9;
+            border: 2px dashed #cbd5e1;
+            border-radius: 12px;
+            text-align: center;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Interactive App Card */
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        /* Navigation Tabs */
+        .tab-nav {
+            display: flex;
+            background: #f1f5f9;
+            padding: 0.5rem;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.85rem;
+            border: none;
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Panel Visibility & Animation */
+        .panel {
+            display: none;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Inputs */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .input-grid { grid-template-columns: 1fr; }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-prefix, .input-suffix {
+            position: absolute;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0 0.8rem;
+            pointer-events: none;
+        }
+
+        .input-prefix { left: 0; }
+        .input-suffix { right: 0; }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .has-prefix input { padding-left: 2.2rem; }
+        .has-suffix input { padding-right: 2.2rem; }
+
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+        }
+
+        /* Interactive Range Slider */
+        .slider-wrapper {
+            margin-top: 0.5rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Quick Discount Chips */
+        .chip-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            background: #e0e7ff;
+            color: var(--primary);
+            border: none;
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        /* Result Display Card */
+        .result-card {
+            background: var(--accent-light);
+            border: 2px solid #a7f3d0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .result-details h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #065f46;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-primary {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.1;
+        }
+
+        .result-secondary {
+            font-size: 0.95rem;
+            color: #047857;
+            font-weight: 600;
+            margin-top: 0.25rem;
+        }
+
+        .copy-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        /* Educational Article Section */
+        .article-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .article-card h2 {
+            font-size: 1.35rem;
+            color: var(--text-main);
+            margin-bottom: 1rem;
+        }
+
+        .article-card p, .article-card ul {
+            color: #475569;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .article-card ul { padding-left: 1.25rem; }
+
+        /* Footer & Modals */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid var(--border);
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        footer a:hover { text-decoration: underline; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            z-index: 1000;
+        }
+
+        .modal-body {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            font-size: 1.5rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO HEADER -->
+    <header class="hero">
+        <h1>Percentage & Discount Calculator</h1>
+        <p>Real-time calculation tool for retail discounts, percent changes, and custom totals.</p>
+    </header>
+
+    <div class="main-container">
+
+        <!-- Top AdSense Banner -->
+        <div class="ad-banner">
+            <span>Responsive Header Banner Ad Placement</span>
+        </div>
+
+        <!-- MAIN CALCULATOR APP -->
+        <div class="calculator-card">
+            
+            <!-- Navigation Tabs -->
+            <nav class="tab-nav">
+                <button class="tab-btn active" onclick="setTab('discount')">Discount Off</button>
+                <button class="tab-btn" onclick="setTab('percentage')">Basic Percentage</button>
+                <button class="tab-btn" onclick="setTab('change')">% Change</button>
+            </nav>
+
+            <!-- PANEL 1: DISCOUNT CALCULATOR -->
+            <div id="panel-discount" class="panel active">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="disc-price">Original Price</label>
+                        <div class="input-wrapper has-prefix">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="disc-price" placeholder="100" oninput="runDiscount()">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="disc-rate">Discount Rate (%)</label>
+                        <div class="input-wrapper has-suffix">
+                            <input type="number" id="disc-rate" placeholder="20" oninput="syncDiscountInput(this.value)">
+                            <span class="input-suffix">%</span>
+                        </div>
+                        <!-- Slider Sync -->
+                        <div class="slider-wrapper">
+                            <input type="range" id="disc-slider" min="0" max="100" value="20" oninput="syncDiscountSlider(this.value)">
+                        </div>
+                        <!-- Preset Chips -->
+                        <div class="chip-group">
+                            <button class="chip" onclick="applyDiscountChip(10)">10% Off</button>
+                            <button class="chip" onclick="applyDiscountChip(20)">20% Off</button>
+                            <button class="chip" onclick="applyDiscountChip(30)">30% Off</button>
+                            <button class="chip" onclick="applyDiscountChip(50)">50% Off</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-details">
+                        <h3>Final Sale Price</h3>
+                        <div id="disc-final-val" class="result-primary">$0.00</div>
+                        <div id="disc-savings-val" class="result-secondary">You Save: $0.00</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyResult('disc-final-val')">Copy Price</button>
+                </div>
+            </div>
+
+            <!-- PANEL 2: BASIC PERCENTAGE -->
+            <div id="panel-percentage" class="panel">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="pct-rate">What is</label>
+                        <div class="input-wrapper has-suffix">
+                            <input type="number" id="pct-rate" placeholder="15" oninput="runBasicPct()">
+                            <span class="input-suffix">%</span>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="pct-total">Of Total Amount</label>
+                        <div class="input-wrapper has-prefix">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="pct-total" placeholder="250" oninput="runBasicPct()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-details">
+                        <h3>Calculated Value</h3>
+                        <div id="pct-result-val" class="result-primary">0.00</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyResult('pct-result-val')">Copy Result</button>
+                </div>
+            </div>
+
+            <!-- PANEL 3: PERCENTAGE CHANGE -->
+            <div id="panel-change" class="panel">
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="chg-start">Initial Value</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="chg-start" placeholder="50" oninput="runPctChange()">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="chg-end">Final Value</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="chg-end" placeholder="75" oninput="runPctChange()">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-card">
+                    <div class="result-details">
+                        <h3>Percentage Difference</h3>
+                        <div id="chg-result-val" class="result-primary">0.00%</div>
+                        <div id="chg-status-val" class="result-secondary">No Change</div>
+                    </div>
+                    <button class="copy-btn" onclick="copyResult('chg-result-val')">Copy Change</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Middle AdSense Banner -->
+        <div class="ad-banner">
+            <span>In-Article Native Ad Placement</span>
+        </div>
+
+        <!-- SEO / TEXT CONTENT SECTION -->
+        <article class="article-card">
+            <h2>Fast, Interactive Percentage & Discount Calculations</h2>
+            <p>Our online percentage calculator helps shoppers, business owners, and students calculate price markdowns, sale savings, and percentage growth instantly. The tool runs 100% locally in your browser for privacy and speed.</p>
+
+            <h2>How to Calculate Discounts Manually</h2>
+            <p>To compute a retail discount by hand:</p>
+            <ul>
+                <li>Divide the percentage discount rate by 100 to get a decimal (e.g., 20% / 100 = 0.20).</li>
+                <li>Multiply the original item price by the decimal to find your total dollar savings.</li>
+                <li>Subtract the total dollar savings from the original price to find the final sale price.</li>
+            </ul>
+
+            <h2>Frequently Asked Questions</h2>
+            <p><strong>Is any data recorded?</strong> No, all calculations run in real-time inside your local browser environment.</p>
+        </article>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Percentage & Discount Calculator Tool. All rights reserved.</p>
+        <p>
+            <a onclick="showModal('privacyModal')">Privacy Policy</a> | 
+            <a onclick="showModal('termsModal')">Terms of Service</a> | 
+            <a onclick="showModal('aboutModal')">About Us</a>
+        </p>
+    </footer>
+
+    <!-- MODALS -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="hideModal('privacyModal')">&times;</button>
+            <h2>Privacy Policy</h2>
+            <p style="margin-top:1rem;">This app operates entirely client-side. We do not harvest, store, or sell personal calculation data. Third-party vendors like Google AdSense use cookies to deliver contextual advertisements.</p>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="hideModal('termsModal')">&times;</button>
+            <h2>Terms of Service</h2>
+            <p style="margin-top:1rem;">This utility is provided free of charge "as is" for quick calculations. While designed for accuracy, we assume no liability for personal or commercial accounting errors.</p>
+        </div>
+    </div>
+
+    <div id="aboutModal" class="modal">
+        <div class="modal-body">
+            <button class="modal-close" onclick="hideModal('aboutModal')">&times;</button>
+            <h2>About Us</h2>
+            <p style="margin-top:1rem;">We build clean, responsive, and ad-compliant web tools to streamline daily math calculations on desktop and mobile browsers.</p>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Tab Navigation
+        function setTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(panel => panel.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById('panel-' + tabId).classList.add('active');
+        }
+
+        // Discount Logic & Sync
+        function runDiscount() {
+            const price = parseFloat(document.getElementById('disc-price').value);
+            const rate = parseFloat(document.getElementById('disc-rate').value);
+
+            if (!isNaN(price) && !isNaN(rate)) {
+                const savings = (price * rate) / 100;
+                const finalPrice = price - savings;
+                document.getElementById('disc-final-val').textContent = '$' + finalPrice.toFixed(2);
+                document.getElementById('disc-savings-val').textContent = 'You Save: $' + savings.toFixed(2);
+            } else {
+                document.getElementById('disc-final-val').textContent = '$0.00';
+                document.getElementById('disc-savings-val').textContent = 'You Save: $0.00';
+            }
+        }
+
+        function syncDiscountInput(val) {
+            document.getElementById('disc-slider').value = val || 0;
+            runDiscount();
+        }
+
+        function syncDiscountSlider(val) {
+            document.getElementById('disc-rate').value = val;
+            runDiscount();
+        }
+
+        function applyDiscountChip(rate) {
+            document.getElementById('disc-rate').value = rate;
+            document.getElementById('disc-slider').value = rate;
+            runDiscount();
+        }
+
+        // Basic Percentage Logic
+        function runBasicPct() {
+            const rate = parseFloat(document.getElementById('pct-rate').value);
+            const total = parseFloat(document.getElementById('pct-total').value);
+
+            if (!isNaN(rate) && !isNaN(total)) {
+                const res = (rate / 100) * total;
+                document.getElementById('pct-result-val').textContent = res.toFixed(2);
+            } else {
+                document.getElementById('pct-result-val').textContent = '0.00';
+            }
+        }
+
+        // Percentage Change Logic
+        function runPctChange() {
+            const start = parseFloat(document.getElementById('chg-start').value);
+            const end = parseFloat(document.getElementById('chg-end').value);
+
+            if (!isNaN(start) && !isNaN(end) && start !== 0) {
+                const diff = ((end - start) / start) * 100;
+                const prefix = diff > 0 ? '+' : '';
+                document.getElementById('chg-result-val').textContent = prefix + diff.toFixed(2) + '%';
+                
+                if (diff > 0) {
+                    document.getElementById('chg-status-val').textContent = 'Increase';
+                    document.getElementById('chg-status-val').style.color = '#059669';
+                } else if (diff < 0) {
+                    document.getElementById('chg-status-val').textContent = 'Decrease';
+                    document.getElementById('chg-status-val').style.color = '#dc2626';
+                } else {
+                    document.getElementById('chg-status-val').textContent = 'No Change';
+                    document.getElementById('chg-status-val').style.color = '#047857';
+                }
+            } else {
+                document.getElementById('chg-result-val').textContent = '0.00%';
+                document.getElementById('chg-status-val').textContent = 'No Change';
+            }
+        }
+
+        // Copy Button Helper
+        function copyResult(elementId) {
+            const textToCopy = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(textToCopy);
+            
+            const btn = event.currentTarget;
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.style.background = '#059669';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = 'var(--accent)';
+            }, 1500);
+        }
+
+        // Modal Helpers
+        function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function hideModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function(e) { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; }
+    </script>
+</body>
+</html>
